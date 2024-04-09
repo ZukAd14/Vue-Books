@@ -20,6 +20,13 @@
     <!-- no books message -->
     <p v-if="!books.length">No books...</p>
 
+    <div>
+      <p v-if="books.length > 5">{{ books.length }} books</p>
+      <p v-else-if="books.length <= 5 && books.length > 1">Not too many of them...</p>
+      <p v-else-if="books.length === 1">One Single book!</p>
+      <p v-else>Go get some books!</p>
+    </div>
+
     <!-- add book form -->
     <form @submit.prevent="handleSubmit">
       <label>
@@ -61,6 +68,8 @@ export default {
     },
     handleSubmit () {
       this.books.push({ ...this.form })
+      this.form.title = ''
+      this.form.price = 0
     }
   }
 }
