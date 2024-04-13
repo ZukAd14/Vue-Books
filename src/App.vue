@@ -1,9 +1,9 @@
 
 <template>
-  <div id="app">
+  <div id="app" class="app">
 
     <!-- heading -->
-    <header>
+    <header class="app__heading">
       <h1>Books<span>.app</span></h1>
     </header>
 
@@ -34,18 +34,24 @@ import BooksSummary from './components/BooksSummary.vue'
 export default {
   name: 'App',
   data: () => ({
-    books: [
-      {
-        title: 'The Catcher in the Rye',
-        price: 20
-      },
-      {
-        title: 'Of Mice and Men',
-        price: 18
-      }
-    ]
+    books: []
   }),
+  created () {
+    this.fetchBooks()
+  },
   methods: {
+    async fetchBooks () {
+      try {
+        const response = await fetch('https://api.itbook.store/1.0/new')
+        const data = await response.json()
+        this.books = data.books.slice(0, 3).map(book => ({
+          title: book.title,
+          price: book.price
+        }))
+      } catch (error) {
+        console.error('Error fetching books: ', error)
+      }
+    },
     removeBook (index) {
       this.books.splice(index, 1)
     },
@@ -61,3 +67,20 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.app {
+  width: 100%;
+  max-width: 1000px;
+  padding: 2rem;
+  margin: 0 auto;
+
+  &__heading {
+    font-size: 3rem;
+    text-align: center;
+    span {
+      color: #5a58da;
+    }
+  }
+}
+</style>

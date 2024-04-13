@@ -1,7 +1,7 @@
 <template>
     <div>
         <p>Books amount: {{ books.length }} </p>
-        <p>Books price: {{ totalPrice }} </p>
+        <p>Books price: {{ '$' + totalPrice }} </p>
     </div>
 </template>
 
@@ -16,7 +16,11 @@ export default {
   },
   computed: {
     totalPrice () {
-      return this.books.reduce((total, book) => total + book.price, 0)
+      return this.books.reduce((total, book) => {
+        const price = parseFloat(book.price.replace('$', ''))
+
+        return total + price
+      }, 0)
     }
   }
 }
